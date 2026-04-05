@@ -98,18 +98,25 @@ function renderItems() {
       wrapper.className = "item";
 
       if (!item) {
+        const emptyCard = document.createElement("div");
+        emptyCard.className = "item-card empty-card";
+
         const empty = document.createElement("div");
         empty.className = "empty";
-        wrapper.appendChild(empty);
+        emptyCard.appendChild(empty);
 
         const emptyLabel = document.createElement("div");
         emptyLabel.className = "label";
         emptyLabel.innerText = "";
-        wrapper.appendChild(emptyLabel);
+        emptyCard.appendChild(emptyLabel);
 
+        wrapper.appendChild(emptyCard);
         itemArea.appendChild(wrapper);
         return;
       }
+
+      const card = document.createElement("div");
+      card.className = "item-card";
 
       const imageBox = document.createElement("div");
       imageBox.className = "image-box";
@@ -125,8 +132,9 @@ function renderItems() {
       label.innerText = item.name;
 
       imageBox.appendChild(img);
-      wrapper.appendChild(imageBox);
-      wrapper.appendChild(label);
+      card.appendChild(imageBox);
+      card.appendChild(label);
+      wrapper.appendChild(card);
       itemArea.appendChild(wrapper);
     });
 
@@ -209,11 +217,13 @@ function toggleItem(element) {
   const score = scoreMap[group];
   const selectedCount = getSelectedImages().length;
   const wrapper = element.closest(".item");
+  const card = element.closest(".item-card");
   const imageBox = element.closest(".image-box");
 
   if (element.classList.contains("selected")) {
     element.classList.remove("selected");
     wrapper.classList.remove("selected-item");
+    card.classList.remove("selected");
     imageBox.classList.remove("selected");
     total -= score;
   } else {
@@ -221,6 +231,7 @@ function toggleItem(element) {
 
     element.classList.add("selected");
     wrapper.classList.add("selected-item");
+    card.classList.add("selected");
     imageBox.classList.add("selected");
     total += score;
   }
@@ -262,6 +273,10 @@ function reset() {
 
   document.querySelectorAll("#groupsContainer .item").forEach((item) => {
     item.classList.remove("selected-item");
+  });
+
+  document.querySelectorAll("#groupsContainer .item-card").forEach((card) => {
+    card.classList.remove("selected");
   });
 
   document.querySelectorAll("#groupsContainer .image-box").forEach((box) => {

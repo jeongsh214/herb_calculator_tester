@@ -2,6 +2,8 @@ const STORAGE_KEY = "recipePlannerData_v1";
 const DARK_KEY = "sharedDarkMode";
 const LONG_PRESS_MS = 500;
 
+let needMap = {};
+
 const materialGroups = {
   A: { label: "A그룹", score: 1 },
   B: { label: "B그룹", score: 2 },
@@ -40,30 +42,26 @@ const materialsByGroup = {
 };
 
 const resultGroups = {
-  황토계열: [{ name: "황토환", src: "results/a.png" }],
-  활생계열: [
+  "저등급 환": [
+    { name: "황토환", src: "results/a.png" },
     { name: "활생환", src: "results/b1.png" },
-    { name: "회생환", src: "results/b2.png" },
-    { name: "만년환", src: "results/b3.png" },
-    { name: "녹환단", src: "results/b4.png" },
-  ],
-  청심계열: [
     { name: "청심환", src: "results/c1.png" },
-    { name: "천심환", src: "results/c2.png" },
-    { name: "천세환", src: "results/c3.png" },
-    { name: "청환단", src: "results/c4.png" },
-  ],
-  대력계열: [
     { name: "대력환", src: "results/d1.png" },
-    { name: "강근환", src: "results/d2.png" },
-    { name: "용력환", src: "results/d3.png" },
-    { name: "흑환단", src: "results/d4.png" },
-  ],
-  명목계열: [
     { name: "명목환", src: "results/e1.png" },
+  ],
+
+  "중등급 환": [
+    { name: "회생환", src: "results/b2.png" },
+    { name: "천심환", src: "results/c2.png" },
+    { name: "강근환", src: "results/d2.png" },
     { name: "천목환", src: "results/e2.png" },
+  ],
+
+  "고등급 환": [
+    { name: "만년환", src: "results/b3.png" },
+    { name: "천세환", src: "results/c3.png" },
+    { name: "용력환", src: "results/d3.png" },
     { name: "신목환", src: "results/e3.png" },
-    { name: "황환단", src: "results/e4.png" },
   ],
 };
 
@@ -393,6 +391,17 @@ function createCard(item, itemState, bucket, name) {
   label.className = "label";
   label.textContent = name;
 
+  card.appendChild(imageBox);
+  card.appendChild(badgeRow);
+  card.appendChild(label);
+
+  if (bucket === "results") {
+    const needText = document.createElement("div");
+    needText.className = "need-text";
+    needText.textContent = `필요 수치: ${needMap[name] || "-"}`;
+    card.appendChild(needText);
+  }
+
   const input = document.createElement("input");
   input.type = "number";
   input.min = "0";
@@ -403,9 +412,6 @@ function createCard(item, itemState, bucket, name) {
     updateCount(bucket, name, input.value);
   });
 
-  card.appendChild(imageBox);
-  card.appendChild(badgeRow);
-  card.appendChild(label);
   card.appendChild(input);
   wrapper.appendChild(card);
 
@@ -883,8 +889,45 @@ document.getElementById("resetMaterialsBtn").addEventListener("click", resetMate
 document.getElementById("resetResultsBtn").addEventListener("click", resetResults);
 document.getElementById("recommendBtn").addEventListener("click", renderRecipes);
 
-loadDarkMode();
-loadState();
-renderAll();
-bindCollapsibleHeaders();
-renderRecipes();
+async function initInventory() {
+  loadDarkMode();
+  loadState();
+  await loadNeedCSV();
+  renderAll();
+  bindCollapsibleHeaders();
+  renderRecipes();
+}
+
+document.getElementById("saveBtn").addEventListener("click", saveState);
+document.getElementById("darkModeBtn").addEventListener("click", toggleDarkMode);
+document.getElementById("resetMaterialsBtn").addEventListener("click", resetMaterials);
+document.getElementById("resetResultsBtn").addEventListener("click", resetResults);
+document.getElementById("recommendBtn").addEventListener("click", renderRecipes);
+
+initInventory();
+
+async function loadNeedCSV() {
+  try {
+    const response = await fetch("./need.csv");
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const text = await response.text();
+    const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+    const rows = lines.slice(1);
+
+    needMap = {};
+
+    rows.forEach((line) => {
+      const [name, need] = line.split(",");
+      if (name && need) {
+        needMap[name.trim()] = need.trim();
+      }
+    });
+  } catch (error) {
+    console.error("need.csv 로드 실패", error);
+    needMap = {};
+  }
+}

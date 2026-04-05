@@ -82,6 +82,27 @@ function createGroupTitle(group) {
   return title;
 }
 
+function createImageBox(item, group) {
+  const imageBox = document.createElement("div");
+  imageBox.className = "image-box";
+
+  const img = document.createElement("img");
+  img.src = item.src;
+  img.alt = item.name;
+  img.dataset.group = group;
+  img.draggable = false;
+  img.setAttribute("draggable", "false");
+
+  imageBox.appendChild(img);
+
+  imageBox.addEventListener("click", () => toggleItem(img));
+  imageBox.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+
+  return imageBox;
+}
+
 function renderItems() {
   groupsContainer.innerHTML = "";
 
@@ -118,20 +139,12 @@ function renderItems() {
       const card = document.createElement("div");
       card.className = "item-card";
 
-      const imageBox = document.createElement("div");
-      imageBox.className = "image-box";
-
-      const img = document.createElement("img");
-      img.src = item.src;
-      img.alt = item.name;
-      img.dataset.group = group;
-      img.addEventListener("click", () => toggleItem(img));
+      const imageBox = createImageBox(item, group);
 
       const label = document.createElement("div");
       label.className = "label";
       label.innerText = item.name;
 
-      imageBox.appendChild(img);
       card.appendChild(imageBox);
       card.appendChild(label);
       wrapper.appendChild(card);
@@ -321,6 +334,12 @@ function bindEvents() {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       toggleGroups();
+    }
+  });
+
+  document.addEventListener("contextmenu", (e) => {
+    if (e.target.closest(".image-box")) {
+      e.preventDefault();
     }
   });
 }

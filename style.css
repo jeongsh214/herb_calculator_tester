@@ -227,6 +227,10 @@ body {
   border-radius: 10px;
   overflow: hidden;
   background: #ffffff;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .image-box img {
@@ -238,6 +242,8 @@ body {
   border-radius: 10px;
   user-select: none;
   -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
 }
 
 .image-box::after {

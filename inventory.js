@@ -49,14 +49,12 @@ const resultGroups = {
     { name: "대력환", src: "results/d1.png" },
     { name: "명목환", src: "results/e1.png" },
   ],
-
   "중등급 환": [
     { name: "회생환", src: "results/b2.png" },
     { name: "천심환", src: "results/c2.png" },
     { name: "강근환", src: "results/d2.png" },
     { name: "천목환", src: "results/e2.png" },
   ],
-
   "고등급 환": [
     { name: "만년환", src: "results/b3.png" },
     { name: "천세환", src: "results/c3.png" },
@@ -247,6 +245,39 @@ function toggleDarkMode() {
   applyDarkMode(nextDark);
 }
 
+async function loadNeedCSV() {
+  try {
+    const response = await fetch("./need.csv");
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const text = await response.text();
+    const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+    const rows = lines.slice(1);
+
+    needMap = {};
+
+    rows.forEach((line) => {
+      const [name, need] = line.split(",");
+      if (name && need) {
+        needMap[name.trim()] = need.trim();
+      }
+    });
+  } catch (error) {
+    console.error("need.csv 로드 실패", error);
+    needMap = {};
+  }
+}
+
+function createFallback(text) {
+  const div = document.createElement("div");
+  div.className = "fallback";
+  div.textContent = text;
+  return div;
+}
+
 function createImageOrFallback(item) {
   if (!item.src) {
     return createFallback(item.name);
@@ -256,17 +287,11 @@ function createImageOrFallback(item) {
   img.src = item.src;
   img.alt = item.name;
   img.draggable = false;
+  img.setAttribute("draggable", "false");
   img.onerror = () => {
     img.replaceWith(createFallback(item.name));
   };
   return img;
-}
-
-function createFallback(text) {
-  const div = document.createElement("div");
-  div.className = "fallback";
-  div.textContent = text;
-  return div;
 }
 
 function attachPressEvents(target, clickHandler, longHandler) {
@@ -320,6 +345,9 @@ function attachPressEvents(target, clickHandler, longHandler) {
   target.addEventListener("pointerup", end);
   target.addEventListener("pointerleave", cancel);
   target.addEventListener("pointercancel", cancel);
+  target.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
 }
 
 function toggleEnabled(bucket, name) {
@@ -883,11 +911,19 @@ function renderAll() {
   updateSaveStatus();
 }
 
-document.getElementById("saveBtn").addEventListener("click", saveState);
-document.getElementById("darkModeBtn").addEventListener("click", toggleDarkMode);
-document.getElementById("resetMaterialsBtn").addEventListener("click", resetMaterials);
-document.getElementById("resetResultsBtn").addEventListener("click", resetResults);
-document.getElementById("recommendBtn").addEventListener("click", renderRecipes);
+function bindGlobalEvents() {
+  document.addEventListener("contextmenu", (e) => {
+    if (e.target.closest(".image-box") || e.target.closest(".recipe-image")) {
+      e.preventDefault();
+    }
+  });
+
+  document.getElementById("saveBtn").addEventListener("click", saveState);
+  document.getElementById("darkModeBtn").addEventListener("click", toggleDarkMode);
+  document.getElementById("resetMaterialsBtn").addEventListener("click", resetMaterials);
+  document.getElementById("resetResultsBtn").addEventListener("click", resetResults);
+  document.getElementById("recommendBtn").addEventListener("click", renderRecipes);
+}
 
 async function initInventory() {
   loadDarkMode();
@@ -895,39 +931,8 @@ async function initInventory() {
   await loadNeedCSV();
   renderAll();
   bindCollapsibleHeaders();
+  bindGlobalEvents();
   renderRecipes();
 }
 
-document.getElementById("saveBtn").addEventListener("click", saveState);
-document.getElementById("darkModeBtn").addEventListener("click", toggleDarkMode);
-document.getElementById("resetMaterialsBtn").addEventListener("click", resetMaterials);
-document.getElementById("resetResultsBtn").addEventListener("click", resetResults);
-document.getElementById("recommendBtn").addEventListener("click", renderRecipes);
-
 initInventory();
-
-async function loadNeedCSV() {
-  try {
-    const response = await fetch("./need.csv");
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const text = await response.text();
-    const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
-    const rows = lines.slice(1);
-
-    needMap = {};
-
-    rows.forEach((line) => {
-      const [name, need] = line.split(",");
-      if (name && need) {
-        needMap[name.trim()] = need.trim();
-      }
-    });
-  } catch (error) {
-    console.error("need.csv 로드 실패", error);
-    needMap = {};
-  }
-}

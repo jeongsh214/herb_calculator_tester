@@ -758,3 +758,28 @@ body {
     width: 100%;
   }
 }
+
+.credit {
+  position: fixed;
+  right: 14px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1;
+  color: #9ca3af;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.credit-logo {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+}
+
+.dark body .credit {
+  color: #9ca3af;
+}

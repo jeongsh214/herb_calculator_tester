@@ -68,8 +68,8 @@ body {
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
-  transition: 0.15s;
 }
+g  transition: 0.15s;
 
 .top-btn:hover {
   background: #d1d5db;
@@ -700,9 +700,11 @@ body {
   }
 
   .top-center {
-    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
   }
-
+  
   .right {
     font-size: 20px;
   }
@@ -742,11 +744,15 @@ body {
     font-size: 12px;
   }
 
-  .top-btn,
   .recommend-btn,
   .recipe-run-btn,
   .section-reset-btn {
     width: 100%;
+  }
+
+  .top-btn {
+    width: 96px;     /* 다시 강제 고정 */
+    flex: 0 0 auto;  /* 늘어나지 않게 */
   }
 
   .recipe-controls {

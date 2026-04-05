@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>약초 조합 계산기</title>
+
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("sharedDarkMode");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sticky-area">
+    <div class="top-bar">
+      <div class="left">
+        합계: <span id="total">0</span>
+      </div>
+
+      <div class="top-center">
+        <button class="top-btn nav-btn" type="button" onclick="location.href='inventory.html'">inventory</button>
+        <button id="darkBtn" class="top-btn" type="button">🌙</button>
+      </div>
+
+      <div class="right">
+        결과: <span id="result">-</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-title">조합 안내</div>
+      <div class="info-text">재료를 3개 이상, 최대 5개까지 선택하면 결과 환이 표시됩니다.</div>
+    </div>
+
+    <div class="need-box">
+      <div class="need-inner">
+        <div class="need-left">
+          필요 총합: <span id="neededTotals">-</span>
+        </div>
+
+        <div class="need-right">
+          <select id="needSelect">
+            <option value="">환 선택</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="groupsWrapper" class="section-box">
+    <div
+      id="toggleGroupsHeader"
+      class="section-header collapsible-header"
+      role="button"
+      tabindex="0"
+      aria-expanded="true"
+    >
+      <div class="section-title">재료 선택</div>
+      <div class="collapse-icon" id="groupCollapseIcon">−</div>
+    </div>
+
+    <div id="groupsContent">
+      <div id="groupsContainer" class="groups-container"></div>
+
+      <div class="action-row bottom-actions">
+        <button id="resetBtn" class="action-btn reset-button" type="button">초기화</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="credit">
+    <img src="mark1.png" class="credit-logo" />
+    <img src="mark2.png" class="credit-logo" />
+    <span>© 2026. Jeong_sh020123, LovePoem All rights reserved.</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

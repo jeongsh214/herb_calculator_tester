@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>조합 추천 관리</title>
+
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("sharedDarkMode");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="inventory.css" />
+</head>
+<body>
+  <div class="sticky-area">
+    <div class="top-bar">
+      <div class="left">
+        저장 상태: <span id="saveStatus">저장됨</span>
+      </div>
+
+      <div class="top-center">
+        <button class="top-btn nav-btn" type="button" onclick="location.href='index.html'">index</button>
+        <button id="darkModeBtn" class="top-btn" type="button">다크모드</button>
+      </div>
+
+      <div class="right">
+        조합 추천 관리
+      </div>
+    </div>
+
+    <div class="info-box compact-info">
+      <div class="info-row">
+        <div class="info-content">
+          <div class="info-title">입력 방법</div>
+          <div class="info-text">클릭: 사용 여부 / 길게 클릭: 우선 사용 / 하단 숫자: 개수 입력</div>
+        </div>
+
+        <div class="info-action">
+          <button id="saveBtn" class="top-btn primary-btn save-side-btn" type="button">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-shell">
+    <div class="section-box">
+      <div class="section-header collapsible-header" data-target="materialContainer" data-icon="materialCollapseIcon">
+        <div class="section-title">보유 재료 설정</div>
+        <div class="section-header-right">
+          <button id="resetMaterialsBtn" class="section-reset-btn" type="button">초기화</button>
+          <span class="collapse-icon" id="materialCollapseIcon">−</span>
+        </div>
+      </div>
+      <div id="materialContainer" class="groups-container"></div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-header collapsible-header" data-target="resultContainer" data-icon="resultCollapseIcon">
+        <div class="section-title">원하는 환 설정</div>
+        <div class="section-header-right">
+          <button id="resetResultsBtn" class="section-reset-btn" type="button">초기화</button>
+          <span class="collapse-icon" id="resultCollapseIcon">−</span>
+        </div>
+      </div>
+      <div id="resultContainer" class="groups-container"></div>
+    </div>
+
+    <div class="recommend-row">
+      <button id="recommendBtn" class="recommend-btn" type="button">추천</button>
+    </div>
+
+    <div class="section-box recipe-section">
+      <div class="section-header recipe-header">
+        <div class="section-title">추천 조합법</div>
+      </div>
+      <div id="recipeList" class="recipe-list">
+        <div class="recipe-empty">추천 결과 없음</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="inventory.js"></script>
+</body>
+</html>

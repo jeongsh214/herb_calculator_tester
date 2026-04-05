@@ -421,6 +421,10 @@ body {
   .top-center {
     flex-wrap: wrap;
   }
+  .top-btn {
+    width: 96px;     /* 다시 강제 고정 */
+    flex: 0 0 auto;  /* 늘어나지 않게 */
+  }
 
   .right {
     font-size: 20px;

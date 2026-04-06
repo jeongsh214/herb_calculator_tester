@@ -261,9 +261,19 @@ async function loadNeedCSV() {
 
     rows.forEach((line) => {
       const [name, need] = line.split(",");
-      if (name && need) {
-        needMap[name.trim()] = need.trim();
-      }
+      if (!name || !need) return;
+
+      const rawName = name.trim();
+      const trimmedNeed = need.trim();
+
+      const baseName = rawName.replace(/\(.*?\)/, "").trim();
+      const effectMatch = rawName.match(/\((.*?)\)/);
+      const effectText = effectMatch ? effectMatch[1].trim() : "";
+
+      needMap[baseName] = {
+        need: trimmedNeed,
+        effect: effectText,
+      };
     });
   } catch (error) {
     console.error("need.csv 로드 실패", error);
@@ -423,12 +433,19 @@ function createCard(item, itemState, bucket, name) {
   card.appendChild(badgeRow);
   card.appendChild(label);
 
-  if (bucket === "results") {
-    const needText = document.createElement("div");
-    needText.className = "need-text";
-    needText.textContent = `필요 수치: ${needMap[name] || "-"}`;
-    card.appendChild(needText);
-  }
+if (bucket === "results") {
+  const needInfo = needMap[name];
+
+  const effectText = document.createElement("div");
+  effectText.className = "effect-text";
+  effectText.textContent = needInfo?.effect || "-";
+  card.appendChild(effectText);
+
+  const needText = document.createElement("div");
+  needText.className = "need-text";
+  needText.textContent = `필요 수치: ${needInfo?.need || "-"}`;
+  card.appendChild(needText);
+}
 
   const input = document.createElement("input");
   input.type = "number";

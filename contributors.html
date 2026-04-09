@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>도움을 주신 분들</title>
+
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem("sharedDarkMode");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sticky-area">
+    <div class="top-bar">
+      <div class="left">도움을 주신 분들</div>
+
+      <div class="top-center">
+        <button class="top-btn nav-btn" type="button" onclick="goBack()">뒤로가기</button>
+        <button id="darkBtn" class="top-btn" type="button">🌙</button>
+        <button
+          class="top-btn nav-btn"
+          type="button"
+          onclick="window.open('https://forky-g.github.io/HANWOL-WEBMAP/', '_blank')"
+        >
+          지도
+        </button>
+      </div>
+
+      <div class="right">목록</div>
+    </div>
+  </div>
+
+  <div class="subpage-shell">
+    <div class="subpage-title-box">
+      <div class="subpage-title">도움을 주신 분들</div>
+      <div class="subpage-desc">contributors.csv 기준으로 이름 목록을 불러옵니다.</div>
+    </div>
+
+    <div class="section-box">
+      <div id="contributorList" class="link-list">
+        <div class="link-card">
+          <div class="link-card-title">불러오는 중...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-credit">
+    <img src="mark1.png" class="credit-logo" alt="" />
+    <img src="mark2.png" class="credit-logo" alt="" />
+    <span>© 2026. Jeong_sh020123, LovePoem All rights reserved.</span>
+  </div>
+
+  <script src="contributors.js"></script>
+</body>
+</html>

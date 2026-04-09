@@ -78,7 +78,9 @@ body {
 }
 
 .need-box,
-.section-box {
+.section-box,
+.footer-links-box,
+.subpage-title-box {
   width: 100%;
   max-width: 980px;
   margin: 0 auto 16px;
@@ -311,6 +313,148 @@ body {
   object-fit: contain;
 }
 
+.footer-links-box {
+  margin: 20px auto 72px;
+}
+
+.footer-links-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.footer-links-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.footer-link-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: #f9fafb;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.15s;
+  box-sizing: border-box;
+}
+
+.footer-link-card:hover {
+  background: #f3f4f6;
+  border-color: #cbd5e1;
+}
+
+.footer-link-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.footer-link-desc {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.subpage-shell {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.subpage-title-box {
+  text-align: left;
+}
+
+.subpage-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.subpage-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+.link-list {
+  display: grid;
+  gap: 14px;
+}
+
+.link-card {
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: #f9fafb;
+  text-align: left;
+}
+
+.link-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.link-card-sub {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.update-version {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+
+.update-version:first-child {
+  margin-top: 0;
+}
+
+.update-items {
+  display: grid;
+  gap: 10px;
+}
+
+.update-item {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #f9fafb;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.page-credit {
+  max-width: 980px;
+  margin: 20px auto 0;
+  padding: 10px 0 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1;
+  color: #9ca3af;
+  opacity: 0.9;
+}
+
+.page-credit .credit-logo {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .image-box:hover::after {
     border-color: #ff9999;
@@ -340,7 +484,9 @@ body {
 
 .dark body .top-bar,
 .dark body .need-box,
-.dark body .section-box {
+.dark body .section-box,
+.dark body .footer-links-box,
+.dark body .subpage-title-box {
   background: #1f2937;
   border-color: #374151;
 }
@@ -355,7 +501,11 @@ body {
 
 .dark body .group-score,
 .dark body .collapse-icon,
-.dark body .credit {
+.dark body .credit,
+.dark body .footer-link-desc,
+.dark body .subpage-desc,
+.dark body .link-card-sub,
+.dark body .page-credit {
   color: #9ca3af;
 }
 
@@ -376,7 +526,9 @@ body {
   border-color: #374151;
 }
 
-.dark body .item-card {
+.dark body .item-card,
+.dark body .link-card,
+.dark body .update-item {
   background: #1f2937;
   border-color: #374151;
 }
@@ -395,6 +547,17 @@ body {
 
 .dark body .image-box.selected::after {
   border-color: #ef4444;
+}
+
+.dark body .footer-link-card {
+  background: #111827;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+.dark body .footer-link-card:hover {
+  background: #18212f;
+  border-color: #4b5563;
 }
 
 @media (max-width: 768px) {
@@ -421,9 +584,10 @@ body {
   .top-center {
     flex-wrap: wrap;
   }
+
   .top-btn {
-    width: 96px;     /* 다시 강제 고정 */
-    flex: 0 0 auto;  /* 늘어나지 않게 */
+    width: 96px;
+    flex: 0 0 auto;
   }
 
   .right {
@@ -448,6 +612,10 @@ body {
   .group-items {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .footer-links-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -466,8 +634,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .image-box,
-  .empty {
+  .image-box {
     width: 72px;
     height: 72px;
   }

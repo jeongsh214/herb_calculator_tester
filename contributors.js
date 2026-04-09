@@ -35,6 +35,30 @@ function parseCSVLine(line) {
   return line.split(",").map((value) => value.trim());
 }
 
+function createFallbackMark() {
+  const fallback = document.createElement("div");
+  fallback.className = "contributor-mark-fallback";
+  fallback.textContent = "•";
+  return fallback;
+}
+
+function createContributorMark(fileName, displayName) {
+  if (!fileName) {
+    return createFallbackMark();
+  }
+
+  const img = document.createElement("img");
+  img.className = "contributor-mark";
+  img.src = fileName;
+  img.alt = displayName;
+  img.draggable = false;
+  img.setAttribute("draggable", "false");
+  img.onerror = () => {
+    img.replaceWith(createFallbackMark());
+  };
+  return img;
+}
+
 async function loadContributors() {
   try {
     const response = await fetch("./contributors.csv");
@@ -49,22 +73,28 @@ async function loadContributors() {
     contributorList.innerHTML = "";
 
     rows.forEach((line) => {
-      const [markName, displayName] = parseCSVLine(line);
-      if (!markName || !displayName) return;
+      const [markFileName, displayName] = parseCSVLine(line);
+      if (!displayName) return;
 
       const card = document.createElement("div");
-      card.className = "link-card";
+      card.className = "link-card contributor-card";
+
+      const row = document.createElement("div");
+      row.className = "contributor-row";
+
+      const mark = createContributorMark(markFileName, displayName);
+
+      const textWrap = document.createElement("div");
+      textWrap.className = "contributor-text";
 
       const title = document.createElement("div");
       title.className = "link-card-title";
       title.textContent = displayName;
 
-      const sub = document.createElement("div");
-      sub.className = "link-card-sub";
-      sub.textContent = markName;
-
-      card.appendChild(title);
-      card.appendChild(sub);
+      textWrap.appendChild(title);
+      row.appendChild(mark);
+      row.appendChild(textWrap);
+      card.appendChild(row);
       contributorList.appendChild(card);
     });
 

@@ -644,3 +644,45 @@ body {
     font-size: 12px;
   }
 }
+
+.contributor-card {
+  padding: 12px 14px;
+}
+
+.contributor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contributor-mark {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.contributor-mark-fallback {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.contributor-text {
+  min-width: 0;
+  text-align: left;
+}
+
+.dark body .contributor-mark-fallback {
+  background: #374151;
+  color: #d1d5db;
+}
